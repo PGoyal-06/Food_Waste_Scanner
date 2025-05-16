@@ -31,7 +31,7 @@ Recipe:
 
     try:
         response = client.chat.completions.create(
-            model="o3",
+            model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=800
@@ -47,3 +47,16 @@ Recipe:
         return [{"ingredient": "Error", "waste_risk": "N/A", "reason": "Invalid JSON from GPT", "suggestion": str(je)}]
     except Exception as e:
         return [{"ingredient": "Error", "waste_risk": "N/A", "reason": str(e), "suggestion": "Check API key or response format"}]
+
+
+def ask_assistant(question):
+    prompt = f"You are a kitchen assistant helping users reduce food waste. Answer this question briefly and helpfully:\n\nUser: {question}\nAssistant:"
+
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
+        max_tokens=300
+    )
+
+    return response.choices[0].message.content.strip()
