@@ -1,46 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <title>Food Waste Scanner</title>
+  <title>Smart Recipes - Zero Waste</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <div class="theme-toggle form-check form-switch">
-    <input class="form-check-input" type="checkbox" id="darkModeSwitch" />
-    <label class="form-check-label" for="darkModeSwitch">🌙 Dark Mode</label>
-  </div>
+  <main class="container" role="main" aria-label="Smart Recipes Zero Waste Desktop Website">
+    <div class="layout-desktop">
+      <!-- Left column -->
+      <section class="left-column">
+        <h1 class="main-title">Smart Recipes.<br>Zero Waste.</h1>
+        <p class="subtitle">
+          Upload any recipe and instantly see which ingredients you're at risk of wasting — plus personalized tips to cut waste.
+        </p>
 
-  <div class="container">
-    <h1 class="mb-4">🥕 Food Waste Scanner</h1>
-
-    <div class="card shadow mb-4">
-      <div class="card-body">
-        <form method="POST" onsubmit="showSpinner()">
-          <div class="mb-3">
-            <label for="recipe" class="form-label">Paste or speak your ingredients:</label>
-            <textarea name="recipe" id="recipe" class="form-control" rows="6" required placeholder="e.g., 1 bunch cilantro, tomato paste, Greek yogurt..."></textarea>
+        <section class="try-it-now" aria-labelledby="tryItNowLabel">
+          <div class="try-header" id="tryItNowLabel">
+            Try it now
+            <button class="toggle-btn" type="button" aria-label="Toggle try it now section">–</button>
           </div>
-          <button type="submit" class="btn btn-primary">Analyze</button>
-          <button type="button" class="btn btn-secondary ms-2" onclick="startListening()">🎙️ Speak Ingredients</button>
+          <div class="try-controls">
+            <button type="button" class="choose-file" aria-label="Choose a recipe file">📁 Choose a recipe file ▼</button>
+            <button type="button" class="paste-recipe" aria-label="Paste recipe">Paste recipe</button>
+            <button type="submit" form="recipe-form" class="analyze-btn" aria-label="Analyze recipe">Analyze</button>
+          </div>
+          <div class="ingredients-list" aria-live="polite" aria-atomic="true" role="list">
+            <div class="ingredient-name" role="listitem" style="color:#d63b2e;">
+              <svg viewBox="0 0 64 64" fill="currentColor" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path d="M32 60c-7-14 10-38 10-38l12 10-22 28Z"/></svg>
+              Carrots <span class="checkmark" aria-label="Low risk checkmark">✔️</span>
+            </div>
+            <div>10%</div>
+            <div>10%</div>
+            <div title="Store in airtight container">Store in at</div>
+
+            <div class="row-separator" role="separator"></div>
+
+            <div class="ingredient-name" role="listitem" style="color:#3a793a;">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>
+              Greek yogurt
+            </div>
+            <div>45%</div>
+            <div>45%</div>
+            <div title="Chill and seal container">Chilla seal</div>
+
+            <div class="row-separator" role="separator"></div>
+
+            <div class="ingredient-name" role="listitem" style="color:#f7b342;">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path d="M5 19L19 5"/></svg>
+              Lettuce
+            </div>
+            <div>80%</div>
+            <div>801</div>
+            <div title="Eat within 2 days">Eat within 2d</div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Right column -->
+      <section class="right-column">
+        <form id="recipe-form" method="POST" onsubmit="showSpinner()">
+          <label for="recipe" class="form-label">Paste or speak your ingredients:</label>
+          <textarea
+            name="recipe"
+            id="recipe"
+            rows="8"
+            required
+            placeholder="e.g., 1 bunch cilantro, tomato paste, Greek yogurt..."
+          ></textarea>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">Analyze</button>
+            <button type="button" class="btn btn-secondary" onclick="startListening()">🎙️ Speak Ingredients</button>
+          </div>
         </form>
-      </div>
-    </div>
 
-    <div id="loadingSpinner" class="text-center mb-4">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2">Analyzing your recipe...</p>
-    </div>
+        <div id="loadingSpinner" aria-live="polite" aria-atomic="true" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p>Analyzing your recipe...</p>
+        </div>
 
-    {% if result %}
-    <div class="card shadow mb-4">
-      <div class="card-body">
-        <h3 class="card-title">🔍 Analysis Results</h3>
-        <div class="list-group mt-3">
+        {% if result %}
+        <section class="results-card" aria-label="Analysis results">
+          <h3>🔍 Analysis Results</h3>
           {% for item in result %}
-          <div class="list-group-item">
-            <h5 class="mb-1">
+          <article class="result-item">
+            <h5>
               {{ item.ingredient }}
               {% if item.waste_risk.lower() == "high" %}
               <span class="badge badge-high ms-2">High Risk</span>
@@ -50,29 +95,29 @@
               <span class="badge badge-low ms-2">Low Risk</span>
               {% endif %}
             </h5>
-            <p class="mb-1"><strong>Reason:</strong> {{ item.reason }}</p>
-            <p class="mb-0">
-              <strong>Suggestion:</strong> {{ item.suggestion }}
-              <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="speak('{{ item.suggestion }}')">🔊</button>
-            </p>
-          </div>
+            <p><strong>Reason:</strong> {{ item.reason }}</p>
+            <p><strong>Suggestion:</strong> {{ item.suggestion }} <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="speak('{{ item.suggestion }}')">🔊</button></p>
+          </article>
           {% endfor %}
-        </div>
-      </div>
-    </div>
-    {% endif %}
+        </section>
+        {% endif %}
 
-    <div class="card shadow mb-5">
-      <div class="card-body">
-        <h3 class="card-title mb-3">🤖 Ask the Kitchen Assistant</h3>
-        <div id="chat-box" class="chat-container mb-3"></div>
-        <div class="input-group">
-          <input type="text" id="chatInput" class="form-control" placeholder="e.g., What can I do with extra parsley?" />
-          <button class="btn btn-outline-primary" type="button" onclick="sendChat()">Send</button>
-        </div>
-      </div>
+        <section class="chat-card" aria-label="Kitchen assistant chat">
+          <h3>🤖 Ask the Kitchen Assistant</h3>
+          <div id="chat-box" role="log" aria-live="polite" aria-atomic="false"></div>
+          <div class="chat-input-row">
+            <input
+              id="chatInput"
+              type="text"
+              aria-label="Chat input"
+              placeholder="e.g., What can I do with extra parsley?"
+            />
+            <button class="chat-send-btn" type="button" onclick="sendChat()" aria-label="Send chat message">Send</button>
+          </div>
+        </section>
+      </section>
     </div>
-  </div>
+  </main>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
