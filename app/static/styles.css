@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Basic dark theme */
 body {
   background-color: #111;
@@ -415,4 +416,389 @@ textarea#recipe:focus {
   .results-card, .chat-card {
     padding: 25px;
   }
+=======
+/*────────────────────────────────────────────
+  1) THEME & VARIABLES
+────────────────────────────────────────────*/
+:root {
+  --bg: #111;
+  --surface: #222;
+  --surface-alt: #1c1c1c;
+  --text: #eee;
+  --text-muted: #ccc;
+  --primary: #3f88ff;
+  --primary-dark: #3671cc;
+  --radius: 0.875rem;
+  --gap: 1.5rem;
+  --shadow: 0 0 16px #0008;
+  --font: "Inter", sans-serif;
+}
+
+/*────────────────────────────────────────────
+  2) GLOBAL
+────────────────────────────────────────────*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: var(--gap) calc(var(--gap) / 2);
+  min-height: 100vh;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+button {
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+}
+
+/*────────────────────────────────────────────
+  3) LAYOUT
+────────────────────────────────────────────*/
+.layout {
+  display: flex;
+  gap: calc(var(--gap) * 2);
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.col--left {
+  flex: 1 1 45%;
+  max-width: 480px;
+}
+
+.col--right {
+  flex: 1 1 50%;
+  max-width: 580px;
+}
+
+/*────────────────────────────────────────────
+  4) TYPOGRAPHY
+────────────────────────────────────────────*/
+.title {
+  font-size: 3.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0 0 var(--gap) 0;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  max-width: 440px;
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+/*────────────────────────────────────────────
+  5) CARDS
+────────────────────────────────────────────*/
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: calc(var(--gap) * 1.5) calc(var(--gap) * 1.25);
+  box-shadow: var(--shadow);
+}
+
+/*────────────────────────────────────────────
+  6) TRY-IT BOX
+────────────────────────────────────────────*/
+.try-it {
+  --inner-gap: 1rem;
+}
+
+.try-it .card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.try-it .card__header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.try-it .toggle {
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.try-it .card__body {
+  margin-top: var(--inner-gap);
+}
+
+.controls {
+  display: flex;
+  gap: var(--inner-gap);
+}
+
+.controls button {
+  background: var(--surface-alt);
+  color: var(--text);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.controls button:hover {
+  background: #333;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: #555;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: #444;
+}
+
+/*────────────────────────────────────────────
+  7) INGREDIENT LIST
+────────────────────────────────────────────*/
+.ingredients {
+  list-style: none;
+  margin: var(--inner-gap) 0 0;
+  padding: 0;
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.ingredient {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+  transition: background 0.3s ease;
+}
+
+.ingredient:hover {
+  background-color: #2a2a2a;
+  cursor: default;
+}
+.ingredient .icon {
+  font-size: 1.4rem;
+}
+
+.ingredient:last-child {
+  border-bottom: none;
+}
+
+.ingredient .icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 1rem;
+  fill: currentColor;
+}
+
+.ingredient.low {
+  color: #d63b2e;
+}
+
+.ingredient.medium {
+  color: #3a793a;
+}
+
+.ingredient.high {
+  color: #f7b342;
+}
+
+/*────────────────────────────────────────────
+  8) FORM & RESULTS & CHAT
+────────────────────────────────────────────*/
+form#recipe-form label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+form#recipe-form textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+form#recipe-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #1a2a50;
+}
+
+.controls--form {
+  margin-top: 1rem;
+}
+
+.spinner.hidden {
+  display: none;
+}
+
+.results h3,
+.chat h3 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+.result-item {
+  background: var(--surface-alt);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.result-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 1.25rem;
+  margin-left: 0.5rem;
+}
+
+.badge.high {
+  background: #dc2626;
+  color: #fff;
+}
+
+.badge.medium {
+  background: #facc15;
+  color: #000;
+}
+
+.badge.low {
+  background: #22c55e;
+  color: #fff;
+}
+
+/*────────────────────────────────────────────
+  9) CHAT BOX
+────────────────────────────────────────────*/
+.chat-box {
+  background: var(--bg);
+  border: 1px solid #444;
+  border-radius: var(--radius);
+  min-height: 200px;
+  padding: 1rem;
+  overflow-y: auto;
+  color: #ddd;
+  line-height: 1.4;
+}
+
+/*────────────────────────────────────────────
+ 10) RESPONSIVENESS
+────────────────────────────────────────────*/
+@media (max-width: 1100px) {
+  .layout {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.8rem;
+  }
+  .subtitle {
+    font-size: 1.15rem;
+  }
+  .controls {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2.2rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+/* ─── Chat bubbles & autoscroll ───────────────────── */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px; /* or whatever you prefer */
+  overflow-y: auto;
+  scroll-behavior: smooth; /* smooth scroll on new messages */
+  padding-right: 0.5rem;
+}
+
+.chat-bubble {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  word-wrap: break-word;
+}
+
+/* user on the right, blue background */
+.chat-user {
+  align-self: flex-end;
+  background: var(--primary);
+  color: #fff;
+  border-bottom-right-radius: 0.25rem;
+}
+
+/* assistant on the left, dark surface */
+.chat-assistant {
+  align-self: flex-start;
+  background: var(--surface-alt);
+  color: var(--text);
+  border-bottom-left-radius: 0.25rem;
+}
+/* Better spacing between Analyze and Speak */
+.controls--form .btn-primary {
+  margin-right: 1rem;
+}
+
+/* Icon alignment in buttons */
+button svg,
+button .icon {
+  margin-right: 0.5rem;
+  vertical-align: middle;
+>>>>>>> 121cee5 (updated frontend)
 }

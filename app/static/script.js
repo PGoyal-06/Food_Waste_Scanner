@@ -18,7 +18,8 @@ function showSpinner() {
 }
 
 function startListening() {
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
   recognition.lang = "en-US";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
@@ -47,20 +48,26 @@ function sendChat() {
   const question = input.value.trim();
   if (!question) return;
 
+  // 1) user bubble
   const userMsg = document.createElement("div");
-  userMsg.className = "chat-bubble chat-user align-self-end";
+  userMsg.className = "chat-bubble chat-user";
   userMsg.textContent = question;
   chatBox.appendChild(userMsg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // 2) clear & disable input
   input.value = "";
   input.disabled = true;
 
+  // 3) send to backend
   fetch("/ask", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question: question }),
+    body: JSON.stringify({ question }),
   })
     .then((res) => res.json())
     .then((data) => {
+      // 4) assistant bubble
       const reply = document.createElement("div");
       reply.className = "chat-bubble chat-assistant";
       reply.textContent = data.answer || "Sorry, I didn’t get that.";
@@ -72,9 +79,25 @@ function sendChat() {
       errMsg.className = "chat-bubble chat-assistant text-danger";
       errMsg.textContent = "Error contacting assistant.";
       chatBox.appendChild(errMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      console.error(err);
     })
     .finally(() => {
       input.disabled = false;
       input.focus();
     });
 }
+// ─── File-picker hookup ─────────────────────────
+const chooseFileBtn = document.getElementById("chooseFileBtn");
+const fileInput = document.getElementById("fileInput");
+
+chooseFileBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", () => {
+  if (!fileInput.files.length) return;
+  // show the filename on the button
+  const name = fileInput.files[0].name;
+  chooseFileBtn.textContent = `📁 ${name}`;
+});
